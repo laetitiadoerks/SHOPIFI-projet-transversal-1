@@ -11,6 +11,8 @@ var app = express();
 
 //Permet cross origin request et de connecter l'API et le client
 var cors = require('cors');
+// // Set our port pour tests
+// const port = process.env.PORT || 8000;
 
 //TRANSFERT DU CODE DE LAETITIA VERS BASE
 //LES DEPENDANCES
@@ -127,5 +129,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// // pour tests
+// // Start our server
+// app.listen(port, () => {
+//     console.log(`Server started on port ${port}`);
+// });
 
 module.exports = app;

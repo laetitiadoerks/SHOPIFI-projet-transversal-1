@@ -13,7 +13,7 @@ var passport = require('../config/passport');
 // router.get('/', function(request, response) {
     //response.sendFile(path.join(__dirname + '/login.html'));
     router.post('/', passport.authenticate('local'), (request, response) => {
-        response.send({'success': true})
+        response.status(200).send({'ok': true})
     	// var username = request.body.username;
         // console.log(username);
     	// var password = request.body.password;
