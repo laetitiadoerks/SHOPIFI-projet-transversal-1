@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
-import logo from './logo.svg'
+import Login from './Login.js';
+import logo from './logo.svg';
 
 function App() {
   return (
@@ -9,8 +10,10 @@ function App() {
               <div className="App-logo">
                   <img src={logo} />
               </div>
-
           </header>
+          <body>
+              <Login />
+          </body>
     </div>
   );
 }
