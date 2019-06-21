@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+
+
+
 class Login extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             email: "",
-            password: ""
+            mot_de_passe: ""
         };
 
         //This binding is necessary to make 'this' work in the callback
@@ -28,13 +31,14 @@ class Login extends Component {
     }
 
     onSubmit(event) {
-        const email = this.state.email;
-        const password = this.state.password;
-        console.log("Email: " + email + " Password: " + password);
-        axios.post('/user', {
-            email: email,
-            password: password
-        })
+        const username = 'lo@g.com';
+        const password = '1234';
+        console.log("Email: " + username + " Password: " + password);
+        axios.post('http://localhost:9000/login', null, {
+            params: {
+                username,
+                password,
+            }})
             .then(function (response) {
                 console.log(response);
             })
@@ -42,8 +46,6 @@ class Login extends Component {
                 console.log(error);
             });
     }
-
-
 
     render() {
 
