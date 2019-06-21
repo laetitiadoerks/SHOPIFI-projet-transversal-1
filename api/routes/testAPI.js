@@ -23,6 +23,15 @@ router.get('/', function(request, response) {
     	}
 		]);
 	});
+
+//VERSION TEST
+// router.get('/', function(request, response) {
+//     //response.sendFile(path.join(__dirname + '/login.html'));
+//     response.send([{"id_user": 98, "prenom_user": "Kerwin", "nom_user": "Mickleborough", "genre": "Male", "date_naissance": "1991-06-06T22:00:00.000Z", "addresse": "716 West Alley", "email": "lo@g.com", "mot_de_passe": "1234", "statut": "visiteur"}]);
+// 	});
+
+
+
     // app.post('/login', function(request, response) {
     // 	var username = request.body.username;
     //     console.log(username);

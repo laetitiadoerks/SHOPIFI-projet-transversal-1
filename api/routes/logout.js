@@ -13,7 +13,7 @@ const auth = require('../config/auth');
     router.post('/',  auth.isAuthenticated, (request, response) => {
         // console.log(req.user.email);
     	request.logout();
-        response.send({'success': true})
+        response.status(200).send({'ok': true})
     });
     // app.get('/logout', async (req, res) => {
     //     try {
