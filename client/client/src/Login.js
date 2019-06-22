@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+import { Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 
 
@@ -10,7 +10,8 @@ class Login extends Component {
 
         this.state = {
             email: "",
-            mot_de_passe: ""
+            mot_de_passe: "",
+            loggedInOk: ""
         };
 
         //This binding is necessary to make 'this' work in the callback
@@ -33,33 +34,42 @@ class Login extends Component {
     onSubmit(event) {
         const username = 'lo@g.com';
         const password = '1234';
+        const { history } = this.props;
         console.log("Email: " + username + " Password: " + password);
         axios.post('http://localhost:9000/login', null, {
+            //Pour que ça soit dans le body de la requête 
             params: {
                 username,
                 password,
             }})
-            .then(function (response) {
-                console.log(response);
+            //Toujours utilisé les arrows pour bien définir le contexte
+            .then(response => {
+                const answer = response.statusText;
+                //Si n'utilise pas arrows
+                this.setState({ loggedInOk: answer });
+                history.push('/utilisateur');
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
 
+    //Redirect après que l'utilisateur se soit connecter
+
     render() {
 
         return (
-            <div>Hello Login
+            <div>
+                <body>
                 <form>
                     Email:<br />
                     <input type="email" name="email" value={this.state.email} onChange={this.handleChange} />
                     <br />
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
-                    <button type="button" onClick={this.onSubmit}>Se connecter</button>
-                </form>
+                        <button type="button" value={this.state.loggedInOk} onClick={this.onSubmit}>Se connecter</button>
+                    </form>
+                </body>
             </div>)
-
     }
 }
 
