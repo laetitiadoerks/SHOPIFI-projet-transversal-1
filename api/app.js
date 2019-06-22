@@ -40,6 +40,8 @@ var produitRouter = require("./routes/produit");
 var recommandationRouter = require("./routes/recommandation");
 var signupRouter = require("./routes/signup");
 var userRouter = require("./routes/user");
+var achatRouter = require("./routes/achat");
+var hobbyinteretRouter = require("./routes/hobbyinteret");
 
 
 
@@ -112,6 +114,8 @@ app.use("/produit", produitRouter);
 app.use("/recommandation", recommandationRouter);
 app.use("/signup", signupRouter);
 app.use("/user", userRouter);
+app.use("/achat", achatRouter);
+app.use("/hobbyinteret", hobbyinteretRouter);
 
 
 // catch 404 and forward to error handler

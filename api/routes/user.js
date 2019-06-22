@@ -92,7 +92,8 @@ router.post('/modification',  auth.isAuthenticated,  async (req, res) => {
         //res.status(500).send({'error': err})
 		response.send({'erreur': err})
     }
-})
+});
+
 
 //VERSION TEST
 // //FONCTIONNE
