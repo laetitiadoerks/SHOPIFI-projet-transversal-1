@@ -36,7 +36,7 @@ Démarrer votre server local MySQL
 Créer une base de données avec le fichier `database/init.sql` 
 et si vous voulez les données avec lesquelles le projet a été concu, insérer les données contenues dans le fichier `database/datas.sql`.
 
-Il faut ensuite modifier les données se trouvant dans le fichier `lib/dcconn.js`pour y mettre vos informations de connection à la base de données.
+Il faut ensuite modifier les données se trouvant dans le fichier `api/lib/dbconn.js`pour y mettre vos informations de connection à la base de données.
 
 ### 4.- Démarrer le serveur
 Dans le dossier cloner
