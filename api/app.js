@@ -56,15 +56,23 @@ app.use(bodyParser.json());
 //CORS
 //Définition des CORS
 // pas forcement bon contenu
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
+app.use(cors({
+    origin: true,
+    optionsSuccessStatus: 200,
+    credentials: true
+}))
+
+// // ??? je sais pas ce que c'est
+// app.use(function (req, res, next) {
+//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//     res.setHeader('Access-Control-Allow-Credentials', true);
+//     next();
+// });
 
 const passport = require('./config/passport');
+
 
 //APP GET
 //accueil
@@ -74,8 +82,8 @@ app.use(session({
     store: new fileStore(),
     secret: 'secret',
     resave: false,
-    saveUninitialized: false
-    // cookie:{http:Only:false}
+    saveUninitialized: false,
+    cookie: { httpOnly: false } // Let React access the cookie
 }));
 
 // app.use(session({
@@ -91,7 +99,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 //Utiliser cors
-app.use(cors());
+//app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
