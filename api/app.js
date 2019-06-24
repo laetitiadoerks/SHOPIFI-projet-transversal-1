@@ -1,37 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var session = require('express-session');
-var fileStore = require('session-file-store')(session);
-var app = express();
-// const passport = require('./config/passport');
-//var LocalStrategy = require('passport-local').Strategy;
-
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const fileStore = require('session-file-store')(session);
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
+const passport = require('./config/passport');
+const app = express();
 //Permet cross origin request et de connecter l'API et le client
-var cors = require('cors');
+const cors = require('cors');
+
 // // Set our port pour tests
 // const port = process.env.PORT || 8000;
 
-//TRANSFERT DU CODE DE LAETITIA VERS BASE
-//LES DEPENDANCES
-var mysql = require('mysql2');
-var bodyParser = require('body-parser');
+const connection = require('./lib/dbconn');
 
-// var app = express();
-//bien être connecté au vpn de l'unige pour accéder à la bdd
-// var connection = mysql.createConnection({
-// 	host     : '10.194.69.15',
-// 	user     : 'A6',
-// 	password : 'nm6ofcCAJ7OrlVhD',
-// 	database : 'A6'
-// });
-var connection     = require('./lib/dbconn');
-
+// Poru le routage
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-//Demande un routag spécifique
 var testAPIRouter = require("./routes/testAPI");
 var loginRouter = require("./routes/login");
 var accueilRouter = require("./routes/accueil");
@@ -43,10 +31,6 @@ var userRouter = require("./routes/user");
 var achatRouter = require("./routes/achat");
 var hobbyinteretRouter = require("./routes/hobbyinteret");
 
-
-
-// app.use(passport.initialize())
-// app.use(passport.session())
 
 //BODY PARSER
 app.use(bodyParser.urlencoded({extended : true}));
@@ -71,13 +55,10 @@ app.use(cors({
 //     next();
 // });
 
-const passport = require('./config/passport');
 
 
-//APP GET
-//accueil
-//ajouter comparaison
-//envoyer true a karma
+
+// Session
 app.use(session({
     store: new fileStore(),
     secret: 'secret',
@@ -94,18 +75,15 @@ app.use(session({
 // }));
 
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 //Utiliser cors
 //app.use(cors());
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(logger('dev'));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
 
+// intitialisation passport
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -125,21 +103,6 @@ app.use("/achat", achatRouter);
 app.use("/hobbyinteret", hobbyinteretRouter);
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
 
 // // pour tests
 // // Start our server
