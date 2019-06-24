@@ -9,7 +9,8 @@ const auth = require('../config/auth');
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-router.get('/',  auth.isAuthenticated,  async (req, res) => {
+//auth.isAuthenticated,
+router.get('/',  async (req, res) => {
     try {
         //// initialisation et recupération de la valeur de la variable pour la requete
         var produit=req.body.id_produit;
