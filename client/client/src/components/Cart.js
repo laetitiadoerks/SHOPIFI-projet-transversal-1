@@ -1,12 +1,11 @@
 import React from 'react';
 
-class Film extends React.Component {
+export default class Clart extends React.Component {
     render() {
         return (
             <div>
-                <p>nom de film {this.props.nomFilm}</p>
+                Hello from cart
             </div>
             )
     }
 }
-export default Film

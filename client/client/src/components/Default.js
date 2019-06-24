@@ -1,12 +1,11 @@
 import React from 'react';
 
-class Film extends React.Component {
+export default class Default extends React.Component {
     render() {
         return (
             <div>
-                <p>nom de film {this.props.nomFilm}</p>
+                Page not found
             </div>
             )
     }
 }
-export default Film

@@ -11,7 +11,9 @@ class Login extends Component {
         this.state = {
             email: "",
             mot_de_passe: "",
-            loggedInOk: ""
+            loggedInOk: "",
+            token: "",
+            films:[],
         };
 
         //This binding is necessary to make 'this' work in the callback
@@ -31,7 +33,11 @@ class Login extends Component {
         this.setState({ [name]: value});
     }
 
+
     onSubmit(event) {
+        const config = {
+            headers: { "Authorization": `Bearer ${this.state.token}` }
+        };
         const username = 'lo@g.com';
         const password = '1234';
         const { history } = this.props;
@@ -40,19 +46,32 @@ class Login extends Component {
             //Pour que ça soit dans le body de la requête 
             params: {
                 username,
-                password,
+                password
             }})
             //Toujours utilisé les arrows pour bien définir le contexte
             .then(response => {
                 const answer = response.statusText;
+
                 //Si n'utilise pas arrows
-                this.setState({ loggedInOk: answer });
-                history.push('/utilisateur');
+                this.setState({ loggedInOk: answer, token: document.cookie});
+                console.log(answer);
+                console.log(response);
+                console.log(document.cookie);
+                //history.push('/utilisateur');
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error)
             });
+        axios.get('http://localhost:9000/user').then((response) => {
+            this.setState({
+                films: response.data
+            })
+            console.log(response.data);
+        })
+            .catch(err => console.log(err))
     }
+
+
 
     //Redirect après que l'utilisateur se soit connecter
 
@@ -68,6 +87,7 @@ class Login extends Component {
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
                         <button type="button" value={this.state.loggedInOk} onClick={this.onSubmit}>Se connecter</button>
                     </form>
+                    <p>{this.state.token}</p>
                 </body>
             </div>)
     }
