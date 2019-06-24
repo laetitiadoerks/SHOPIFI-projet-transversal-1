@@ -110,10 +110,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 
-
+// Routes, dit a express d'utiliser ces chemins
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-//Nouvelle route de test, dit a express d'utiliser ce chemin
 app.use("/testAPI", testAPIRouter);
 app.use("/login", loginRouter);
 app.use("/accueil", accueilRouter);

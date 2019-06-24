@@ -1,33 +1,34 @@
-var express = require('express');
-var router = express.Router();
-var connection     = require('../lib/dbconn');
+const express = require('express');
+const router = express.Router();
+const connection     = require('../lib/dbconn');
 const auth = require('../config/auth');
 
-//router.get('/', function(req, res, next) {
-//    res.send('API is working properly');
-//});
-
-
+/**
+* Fonction qui permet d'obtenir les informations d'un produit
+* a partir de l'id_produit d'un produit
+* Verifie si le user est connecté
+* Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
+*/
 router.get('/',  auth.isAuthenticated,  async (req, res) => {
     try {
-            var produit=req.body.id_produit;
-            console.log(produit);
-            const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM produit, categorie, produit_categorie WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie and produit.id_produit = ?"
+        //// initialisation et recupération de la valeur de la variable pour la requete
+        var produit=req.body.id_produit;
+        console.log(produit);
+        const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM produit, categorie, produit_categorie WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie and produit.id_produit = ?"
 
-            const [results] = await connection.promise().query(query, produit)
-            console.log(results);
+        const [results] = await connection.promise().query(query, produit)
+        console.log(results);
 
-            if (results.length==0){
-                res.status(404).send({'erreur': 'ce produit n\'existe pas'});
-            }
-            else {
-                //console.log(results.length);
-                res.status(200).send(results)
-            }
-            // res.send(results)
+        // verifie si la liste n'est pas vide
+        // renvoie une erreur si la liste est vide
+        if (results.length == 0){
+            res.status(404).send({'erreur': 'ce produit n\'existe pas'});
+        }
+        else {
+            //console.log(results.length);
+            res.status(200).send(results)
+        }
     } catch (err) {
-        // Traiter l'erreur (qui est contenue dans `e`)
-        //res.status(500).send({'error': err})
 		response.send({'erreur': err})
     }
 })

@@ -1,3 +1,7 @@
+/**
+* Module pour la connection a la BD
+*/
+
 var mysql        = require('mysql2');
 var connection   = mysql.createConnection({
   supportBigNumbers: true,

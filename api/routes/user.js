@@ -1,24 +1,25 @@
-var express = require('express');
-var router = express.Router();
-var connection     = require('../lib/dbconn');
+const express = require('express');
+const router = express.Router();
+const connection     = require('../lib/dbconn');
 const auth = require('../config/auth');
 
-//router.get('/', function(req, res, next) {
-//    res.send('API is working properly');
-//});
-
-//FONCTIONNE
-//fonctionne si logger
-//pour avoir les informations du user/son profil
+/**
+* Fonction qui permet d'obtenir les informations du user (GET)
+* a partir de l'id du user
+* Verifie si le user est connecté
+* Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
+*/
 router.get('/',  auth.isAuthenticated,  async (req, res) => {
     try {
+        // initialisation et recupération de l'id du user pour la requete
         const userConnecte = req.user.id_user;
-        //var user=req.session.username;
         console.log(userConnecte);
         const query = "SELECT prenom_user, nom_user, genre, date_naissance, addresse, email, mot_de_passe FROM `user` WHERE id_user=?"
 
         const [results] = await connection.promise().query(query, userConnecte)
         console.log(results);
+        // verifie si le tableau du resultat est vide ou non
+        // si il est vide, le user n'existe pas
         if (results.length==0){
             res.status(404).send({'erreur': 'ce user n\'existe pas'});
         }
@@ -27,69 +28,63 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             //console.log(results[0]);
             res.status(200).send(results)
         }
-
-        // res.send(results)
     } catch (err) {
-        // Traiter l'erreur (qui est contenue dans `e`)
-        //res.status(500).send({'error': err})
 		response.send({'erreur': err})
     }
 })
 
-
-
-//FONCTIONNE
-//ATTENTION, ne retourne rien si tableau vide, c'est que client a pas fait achats
-//fonctionne si logger
-//pour avoir la liste des achats effectuer du user
+/**
+* Fonction qui permet d'obtenir la liste d'achats d'un user (GET)
+* a partir de l'id du user
+* Verifie si le user est connecté
+* Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
+*/
 router.get('/achats',  auth.isAuthenticated,  async (req, res) => {
     try {
+        // initialisation et recupération de l'id du user pour la requete
         const userConnecte = req.user.id_user;
-        //var user=req.session.username;
         console.log(userConnecte);
         const query = "SELECT prenom_user, nom_user, nom_produit, prix, date_achat FROM user, achat, produit WHERE user.id_user=achat.id_user and achat.id_produit=produit.id_produit and user.id_user=?"
 
         const [results] = await connection.promise().query(query, userConnecte)
         console.log(results);
-        if (results.length==0){
+        // verifie si le tableau du resultat est vide ou non
+        // si il est vide, le user n'a pas fait d'achats
+        if (results.length == 0){
             res.status(404).send({'erreur': 'ce user n\'a pas fait d\'achats'});
         }
         else {
-            //console.log(results.length);
             res.status(200).send(results)
         }
-
-        //res.send(results)
     } catch (err) {
-        // Traiter l'erreur (qui est contenue dans `e`)
-        //res.status(500).send({'error': err})
 		response.send({'erreur': err})
     }
 })
 
-//
-//user peut changer son nom, son prenom, son addresse, son mot de passe
-//peut tout faire ou rien
-//a modifier? il faudrait faire plusieurs boutons: un pour mot_de_passe, un pour infos perso
-//ne peut pas changer ses interet et hobby
+/**
+* Fonction qui permet de modifier les informations d'un user (POST)
+* a partir de l'id du user et des données entrées par l'utilisateur
+* Verifie si le user est connecté
+* Retourne "{'ok': true}" et un code 200 si ca a fonctionner sinon un erreur
+* L'utilisateur peut changer son nom, son prenom, son addresse, son mot de passe
+* il change tout ou rien
+*/
 router.post('/modification',  auth.isAuthenticated,  async (req, res) => {
     try {
+        // initialisation et recupération de l'id du user pour la requete
         const userConnecte = req.user.id_user;
+        // initialisation et recupération des valeurs des variables pour la requete
         const userNom= req.body.nom_user;
         const userPrenom = req.body.prenom_user;
         const userAddresse = req.body.addresse;
         const userMot_de_passe = req.body.mot_de_passe;
-        //var user=req.session.username;
         console.log(userConnecte);
         const query = "UPDATE `user` SET `prenom_user`=?,`nom_user`=?,`addresse`=?,`mot_de_passe`=? WHERE id_user = ?";
 
-        const [results] = await connection.promise().query(query,[userPrenom, userNom, userAddresse, userMot_de_passe, userConnecte])
-        console.log(results);
+        await connection.promise().query(query,[userPrenom, userNom, userAddresse, userMot_de_passe, userConnecte])
 
-        res.send(results)
+        res.status(200).send({'ok': true})
     } catch (e) {
-        // Traiter l'erreur (qui est contenue dans `e`)
-        //res.status(500).send({'error': err})
 		response.send({'erreur': err})
     }
 });

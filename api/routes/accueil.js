@@ -1,31 +1,21 @@
-var express = require('express');
-var router = express.Router();
-var connection = require('../lib/dbconn');
+const express = require('express');
+const router = express.Router();
+const connection = require('../lib/dbconn');
 const auth = require('../config/auth');
 
-//router.get('/', function(req, res, next) {
-//    res.send('API is working properly');
-//});
+/**
+* Fonction qui permet d'aller sur la page d'acceuil
+* Verifie si le user est connecter
+*/
 
-//FONCTIONNE
-//sur page accueil après login
-//verification de l'authentification pour aller sur la page d'acceuil
 router.get('/',  auth.isAuthenticated, function(request, response) {
 	response.status(200).send({'ok': true});
-
-	// if (request.session.loggedin) {
-	// 	response.send('Welcome back, ' + request.session.username + '!');
-    //     console.log("accueil");
-	// } else {
-	// 	response.send('Please login to view this page!');
-    //     console.log("aller se logger");
-	// }
-	// response.end();
 });
 
-//FONCTIONNE
-//bouton recherche sur page accueil
-//recherche d'un produit contenant le contenu de la barre de recherche dans le nom du profuit, sa description et sa categorie
+/**
+* Fonction pour obtenir une liste de produits a partir d'un mot donné
+* Verifie si user connecter
+*/
 router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
     try {
             var recherche=req.body.recherche;
@@ -38,8 +28,6 @@ router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
 
             res.status(200).send(results)
     } catch (err) {
-        // Traiter l'erreur (qui est contenue dans `e`)
-        //res.status(500).send({'error': err})
 		response.send({'erreur': err})
     }
 })

@@ -1,48 +1,56 @@
-var express = require('express');
-var router = express.Router();
-var connection     = require('../lib/dbconn');
+const express = require('express');
+const router = express.Router();
+const connection     = require('../lib/dbconn');
 const auth = require('../config/auth');
 
-//router.get('/', function(req, res, next) {
-//    res.send('API is working properly');
-//});
 
-//fonction pour recommandation
+// Fonctions pour la recommandation
 
-///???
-const getInfoUser =  async(userId) => {
-    const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM `produit`, `categorie`, `produit_categorie` WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie ORDER BY rand() LIMIT 6"
-    var [results] = await connection.promise().query(query)
-    // console.log('info user');
-    // console.log(results);
-    return  results;
-}
+// const getInfoUser =  async(userId) => {
+//     const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM `produit`, `categorie`, `produit_categorie` WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie ORDER BY rand() LIMIT 6"
+//     var [results] = await connection.promise().query(query)
+//     // console.log('info user');
+//     // console.log(results);
+//     return  results;
+// }
+//
+// const getUser =  async(userId) => {
+//     const query = "SELECT id_user FROM user WHERE id_user=?"
+//     var [results] = await connection.promise().query(query, userId)
+//     // console.log('get user');
+//     // console.log(results);
+//     return  results;
+// }
 
-const getUser =  async(userId) => {
-    const query = "SELECT id_user FROM user WHERE id_user=?"
-    var [results] = await connection.promise().query(query, userId)
-    // console.log('get user');
-    // console.log(results);
-    return  results;
-}
-
+/**
+* Fonction qui permet d'obtenir la liste d'achats du user
+* a partir de l'id du user
+* Retourne les résultats (une liste)
+*/
 const getAchats =  async(userId) => {
     const query = "SELECT achat.id_produit, id_categorie FROM `produit_categorie`, `achat` WHERE achat.id_produit=produit_categorie.id_produit and id_user=?"//ID_USER
     var [results] = await connection.promise().query(query, userId);
-    // console.log('get user Achats');
     // console.log(results);
     return  results;
 }
 
+/**
+* Fonction qui permet d'obtenir la liste des catégories des achats du user
+* a partir de l'id du user
+* Retourne les résultats (une liste)
+*/
 const getCategorie =  async(userId) => {
     const query = "SELECT COUNT(id_categorie) AS numero, id_categorie FROM `produit_categorie`, `achat` WHERE achat.id_produit=produit_categorie.id_produit and id_user=98 GROUP BY id_categorie ORDER BY numero DESC LIMIT 3;"//ID_USER
     var [results] = await connection.promise().query(query, userId)
-    //Array(5).fill(userId)
-    // console.log('get user Achats');
     // console.log(results);
     return  results;
 }
 
+/**
+* Fonction qui permet d'obtenir la liste des hobby du user
+* a partir de l'id du user
+* Retourne les résultats (une liste)
+*/
 const getHobby =  async(userId) => {
     const query = "SELECT nom_hobby FROM `user_hobby`, `hobby` WHERE user_hobby.id_hobby=hobby.id_hobby and id_user=?"//ID_USER
     var [results] = await connection.promise().query(query, userId)
@@ -51,6 +59,11 @@ const getHobby =  async(userId) => {
     return  results;
 }
 
+/**
+* Fonction qui permet d'obtenir la liste des interets du user
+* a partir de l'id du user
+* Retourne les résultats (une liste)
+*/
 const getInteret =  async(userId) => {
     const query = "SELECT nom_interet FROM `user_interet`, `interet` WHERE user_interet.id_interet=interet.id_interet and id_user=?"//ID_USER
     var [results] = await connection.promise().query(query, userId)
@@ -59,7 +72,14 @@ const getInteret =  async(userId) => {
     return  results;
 }
 
+/**
+* Fonction qui permet d'obtenir la liste de produits recommanés du user
+* Recommandation si le user possède: toutes les options
+* a partir de l'id du user, les catégories, les hobby et les interets
+* Retourne les résultats (une liste)
+*/
 const recommandationComplete =  async(userId, categorie1, categorie2, categorie3, hobby1, hobby2, hobby3, interet1, interet2, interet3) => {
+    // ajustement des valeurs pour qu'elles puissent être utilisées dans la requete
     categorie1 = '%'+categorie1+'%';
     categorie2 = '%'+categorie2+'%';
     categorie3 = '%'+categorie3+'%';
@@ -91,8 +111,9 @@ const recommandationComplete =  async(userId, categorie1, categorie2, categorie3
                     ORDER BY RAND()
                     LIMIT 6;`
     var [results] = await connection.promise().query(query, [categorie1, categorie2, categorie3, hobby1, hobby1, hobby1, hobby2, hobby2, hobby2, hobby3, hobby3, hobby3, interet1, interet1, interet1, interet2, interet2, interet2, interet3, interet3, interet3, userId])
-    // console.log('get user Interet');
     // console.log(results);
+
+    // Si la liste ne contient pas 6 éléments, elle est complètée avec le nombre de produits manquant étant les produits les plus achetés
     if (results.length < 6){
         const recomandationPop = await recommandationPopulaire(userId);
         var nombreManquant = 6 - results.length;
@@ -103,12 +124,16 @@ const recommandationComplete =  async(userId, categorie1, categorie2, categorie3
         //console.log(results);
     }
     return  results;
-
 }
 
-
+/**
+* Fonction qui permet d'obtenir la liste de produits recommanés du user
+* Recommandation si le user possède: hobby et interets
+* a partir de l'id du user, les hobby et les interets
+* Retourne les résultats (une liste)
+*/
 const recommandationSansCategorie =  async(userId, hobby1, hobby2, hobby3, interet1, interet2, interet3) => {
-
+    // ajustement des valeurs pour qu'elles puissent être utilisées dans la requete
     hobby1 = '%'+hobby1+'%';
     hobby2 = '%'+hobby2+'%';
     hobby3 = '%'+hobby3+'%';
@@ -134,6 +159,7 @@ const recommandationSansCategorie =  async(userId, hobby1, hobby2, hobby3, inter
     var [results] = await connection.promise().query(query, [hobby1, hobby1, hobby1, hobby2, hobby2, hobby2, hobby3, hobby3, hobby3, interet1, interet1, interet1, interet2, interet2, interet2, interet3, interet3, interet3, userId])
     // console.log('get user Interet');
     console.log(results);
+    // Si la liste ne contient pas 6 éléments, elle est complètée avec le nombre de produits manquant étant les produits les plus achetés
     if (results.length < 6){
         const recomandationPop = await recommandationPopulaire(userId);
         var nombreManquant = 6 - results.length;
@@ -146,8 +172,14 @@ const recommandationSansCategorie =  async(userId, hobby1, hobby2, hobby3, inter
     return  results;
 }
 
-
+/**
+* Fonction qui permet d'obtenir la liste de produits recommandés du user
+* Recommandation si le user possède: categories et interets ou catégories et hobby
+* a partir de l'id du user, les catégories et les interets ou les hobby
+* Retourne les résultats (une liste)
+*/
 const recommandationSansHobby =  async(userId, categorie1, categorie2, categorie3, interet1, interet2, interet3) => {
+    // ajustement des valeurs pour qu'elles puissent être utilisées dans la requete
     categorie1 = '%'+categorie1+'%';
     categorie2 = '%'+categorie2+'%';
     categorie3 = '%'+categorie3+'%';
@@ -169,8 +201,8 @@ const recommandationSansHobby =  async(userId, categorie1, categorie2, categorie
                     ORDER BY RAND()
                     LIMIT 6;`
     var [results] = await connection.promise().query(query, [categorie1, categorie2, categorie3, interet1, interet1, interet1, interet2, interet2, interet2, interet3, interet3, interet3, userId])
-    // console.log('get user Interet');
     // console.log(results);
+    // Si la liste ne contient pas 6 éléments, elle est complètée avec le nombre de produits manquant étant les produits les plus achetés
     if (results.length < 6){
         const recomandationPop = await recommandationPopulaire(userId);
         var nombreManquant = 6 - results.length;
@@ -183,7 +215,14 @@ const recommandationSansHobby =  async(userId, categorie1, categorie2, categorie
     return  results;
 }
 
+/**
+* Fonction qui permet d'obtenir la liste de produits recommandés du user
+* Recommandation si le user possède: interets
+* a partir de l'id du user, les interets
+* Retourne les résultats (une liste)
+*/
 const recommandationSansCategorieSansHobby =  async(userId, interet1, interet2, interet3) => {
+    // ajustement des valeurs pour qu'elles puissent être utilisées dans la requete
     interet1 = '%'+interet1+'%';
     interet2 = '%'+interet2+'%';
     interet3 = '%'+interet3+'%';
@@ -201,8 +240,8 @@ const recommandationSansCategorieSansHobby =  async(userId, interet1, interet2, 
                     ORDER BY RAND()
                     LIMIT 6;`
     var [results] = await connection.promise().query(query, [interet1, interet1, interet1, interet2, interet2, interet2, interet3, interet3, interet3, userId])
-    // console.log('get user Interet');
     // console.log(results);
+    // Si la liste ne contient pas 6 éléments, elle est complètée avec le nombre de produits manquant étant les produits les plus achetés
     if (results.length < 6){
         const recomandationPop = await recommandationPopulaire(userId);
         var nombreManquant = 6 - results.length;
@@ -213,10 +252,16 @@ const recommandationSansCategorieSansHobby =  async(userId, interet1, interet2, 
         //console.log(results);
     }
     return  results;
-
 }
 
+/**
+* Fonction qui permet d'obtenir la liste de produits recommandés du user
+* Recommandation si le user possède: catégories
+* a partir de l'id du user, les catégories
+* Retourne les résultats (une liste)
+*/
 const recommandationSansHobbySansInteret =  async(userId, categorie1, categorie2, categorie3) => {
+    // ajustement des valeurs pour qu'elles puissent être utilisées dans la requete
     categorie1 = '%'+categorie1+'%';
     categorie2 = '%'+categorie2+'%';
     categorie3 = '%'+categorie3+'%';
@@ -232,8 +277,8 @@ const recommandationSansHobbySansInteret =  async(userId, categorie1, categorie2
                     ORDER BY RAND()
                     LIMIT 6;`
     var [results] = await connection.promise().query(query, [categorie1, categorie2, categorie3, userId])
-    // console.log('get user Interet');
     // console.log(results);
+    // Si la liste ne contient pas 6 éléments, elle est complètée avec le nombre de produits manquant étant les produits les plus achetés
     if (results.length < 6){
         const recomandationPop = await recommandationPopulaire(userId);
         var nombreManquant = 6 - results.length;
@@ -244,9 +289,14 @@ const recommandationSansHobbySansInteret =  async(userId, categorie1, categorie2
         //console.log(results);
     }
     return  results;
-
 }
 
+/**
+* Fonction qui permet d'obtenir la liste de produits recommandés du user
+* Recommandation si le user possède: aucune des options
+* a partir de l'id du user
+* Retourne les résultats (une liste)
+*/
 const recommandationPopulaire =  async(userId) => {
     const query = `SELECT nom_produit, produit.id_produit, prix, description_produit, image, note, count(achat.id_produit) as numero
                     FROM achat, produit
@@ -258,8 +308,8 @@ const recommandationPopulaire =  async(userId) => {
                     ORDER BY count(achat.id_produit)DESC
                     LIMIT 6;`
     var [results] = await connection.promise().query(query, userId)
-    // console.log('get user');
     // console.log(results);
+    // Si la liste ne contient pas 6 éléments, elle est complètée avec le nombre de produits manquant étant les produits les plus achetés
     if (results.length < 6){
         const recomandationPop = await recommandationPopulaire(userId);
         var nombreManquant = 6 - results.length;
@@ -273,14 +323,18 @@ const recommandationPopulaire =  async(userId) => {
 
 
 
-
-
+/**
+* Fonction qui permet d'obtenir une liste de produitd recommandés (GET)
+* a partir de l'id du user
+* Verifie si le user est connecté
+* Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
+*/
 router.get('/',  auth.isAuthenticated,  async (req, res) => {
     try {
 
         // 1: récuperer id du user
         const userConnecte = req.user.id_user;
-        console.log('hihi');
+        //console.log('hihi');
         console.log(userConnecte);
 
 
@@ -307,13 +361,8 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
         var interet2 = 'v';
         var interet3 = 'w';
 
-
-        //pas utile
-        // const user = await getUser(userConnecte)
-        // console.log('user:');
-        // console.log(user);
-
-        // 2: regarder si user a fait 3 achats au minimum
+        // 2: regarder si user a fait 3 achats au minimum et si la liste d'achats contient au minimum 3 catégorie différentes
+        // si oui, changer la variable avecCategories a "true"
         const achats = await getAchats(userConnecte)
         console.log('Achats:');
         console.log(achats);
@@ -329,7 +378,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
                 // remplir les variables des categorie si c'est le cas
                 for (var i = 0; i < categories.length; i++) {
                     //categories[i]
-                    console.log(i);
+                    //console.log(i);
                     console.log(categories[i].id_categorie);
                     if (i == 0){
                         categorie1 = categories[i].id_categorie;
@@ -344,19 +393,14 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
                 // passer la variable avecCategories à true
                 avecCategories = true;
             }
-            // on s'en fiche des achats fait???
-            // for (var i = 0; i < achats.length; i++) {
-            //     //achats[i]
-            //     console.log('achats liste');
-            //     console.log(achats[i].id_categorie);
-            // }
         }
-        else{
-            console.log('on fera une recommandation populaire et avecCategories est toujours false.');
-            console.log("Le user a fait moins de 3 achats.");
-        }
+        // else{
+        //     console.log('on fera une recommandation populaire et avecCategories est toujours false.');
+        //     console.log("Le user a fait moins de 3 achats.");
+        // }
 
         // 3: regarder si user a rempli ses 3 hobby
+        // si oui, changer la variable avecHobby a "true"
         const hobby = await getHobby(userConnecte)
         console.log('hobby:');
         console.log(hobby);
@@ -376,12 +420,13 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             }
             avecHobby = true;
         }
-        else{
-            console.log('on fera une recommandation populaire et avecHobby est toujours false.');
-            console.log("Le user a pas rempli ses hobby.");
-        }
+        // else{
+        //     console.log('on fera une recommandation populaire et avecHobby est toujours false.');
+        //     console.log("Le user a pas rempli ses hobby.");
+        // }
 
         // 4: regarder si le user a rempli ses 3 interets
+        // si oui, changer la variable avecInteret a "true"
         const interet = await getInteret(userConnecte)
         console.log('interet:');
         console.log(interet);
@@ -401,11 +446,12 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             }
             avecInteret = true;
         }
-        else{
-            console.log('on fera une recommandation populaire et avecInteret est toujours false.');
-            console.log("Le user a pas rempli ses interets.");
-        }
+        // else{
+        //     console.log('on fera une recommandation populaire et avecInteret est toujours false.');
+        //     console.log("Le user a pas rempli ses interets.");
+        // }
 
+        // print des variables pour les voir
         console.log('RESULTATS : ');
         console.log(avecCategories,avecHobby,avecInteret);
         console.log('categories:');
@@ -426,7 +472,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
         // avecHobby = true;
         // avecInteret = false;
 
-        
+
         // 5: choix de la recommandation a faire en fonction des variables remplies
 
         // 2 true 1 false
@@ -492,8 +538,6 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
         }
 
     } catch (e) {
-        // Traiter l'erreur (qui est contenue dans `e`)
-        //res.status(600).send({'error': err})
 		res.send({'erreur': e})
     }
 })
