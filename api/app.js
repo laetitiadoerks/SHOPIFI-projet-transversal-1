@@ -30,6 +30,7 @@ var signupRouter = require("./routes/signup");
 var userRouter = require("./routes/user");
 var achatRouter = require("./routes/achat");
 var hobbyinteretRouter = require("./routes/hobbyinteret");
+var adminRouter = require("./routes/admin");
 
 
 //BODY PARSER
@@ -101,6 +102,7 @@ app.use("/signup", signupRouter);
 app.use("/user", userRouter);
 app.use("/achat", achatRouter);
 app.use("/hobbyinteret", hobbyinteretRouter);
+app.use("/admin", adminRouter);
 
 
 
