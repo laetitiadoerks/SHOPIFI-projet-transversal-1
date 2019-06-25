@@ -13,7 +13,7 @@ const auth = require('../config/auth');
 router.get('/',  async (req, res) => {
     try {
         //// initialisation et recupération de la valeur de la variable pour la requete
-        var produit=req.body.id_produit;
+        var produit=req.query.id_produit;
         console.log(produit);
         const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM produit, categorie, produit_categorie WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie and produit.id_produit = ?"
 
