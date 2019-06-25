@@ -329,11 +329,13 @@ const recommandationPopulaire =  async(userId) => {
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-router.get('/',  auth.isAuthenticated,  async (req, res) => {
+//auth.isAuthenticated,
+router.get('/', async (req, res) => {
     try {
 
         // 1: récuperer id du user
         const userConnecte = req.user.id_user;
+        //const userConnecte = req.query.id_user;
         //console.log('hihi');
         console.log(userConnecte);
 
@@ -481,6 +483,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('avecCategories et avecHobby vrai, avecInteret faux');
             const recommandation = await recommandationSansHobby(userConnecte, categorie1, categorie2, categorie3, hobby1, hobby2, hobby3);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
         }
         // sans hobby
@@ -488,6 +491,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('avecCategories et avecInteret vrai, avecHobby faux');
             const recommandation = await recommandationSansHobby(userConnecte, categorie1, categorie2, categorie3, interet1, interet2, interet3);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
 
         }
@@ -496,6 +500,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('avecHobby et avecInteret vrai, avecCategories faux');
             const recommandation = await recommandationSansCategorie(userConnecte, hobby1, hobby2, hobby3, interet1, interet2, interet3);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
         }
         // 1 true 2 false
@@ -504,6 +509,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('avecCategories et avecHobby faux, avecInteret vrai');
             const recommandation = await recommandationSansCategorieSansHobby(userConnecte, interet1, interet2, interet3);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
         }
         // sans categories et sans interets
@@ -512,6 +518,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('avecCategories et avecInteret faux, avecHobby vrai');
             const recommandation = await recommandationSansCategorieSansHobby(userConnecte, hobby1, hobby2, hobby3);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
         }
         // sans hobby et sans interets
@@ -520,6 +527,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('avecHobby et avecInteret faux, avecCategories vrai');
             const recommandation = await recommandationSansHobbySansInteret(userConnecte, categorie1, categorie2, categorie3);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
         }
         // tout false
@@ -527,6 +535,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('tout faux');
             const recommandation = await recommandationPopulaire(userConnecte);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
         }
         // tout true
@@ -534,6 +543,7 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             console.log('tout vrai');
             const recommandation = await recommandationComplete(userConnecte, categorie1, categorie2, categorie3, hobby1, hobby2, hobby3, interet1, interet2, interet3);
             //console.log(recommandation);
+            //rescommandation.push({'id_user': userConnecte});
             res.status(200).send(recommandation);
         }
 

@@ -9,6 +9,8 @@ const auth = require('../config/auth');
 */
 
 router.get('/',  auth.isAuthenticated, function(request, response) {
+	//var results = [{'ok': true}];
+	//results.push({'id_user': userConnecte});
 	response.status(200).send({'ok': true});
 });
 
@@ -18,7 +20,7 @@ router.get('/',  auth.isAuthenticated, function(request, response) {
 */
 router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
     try {
-            var recherche=req.body.recherche;
+            var recherche=req.query.recherche;
             console.log(recherche);
             recherche = '%'+recherche+'%';
             const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM produit, categorie, produit_categorie WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie and (nom_produit like ? or description_produit like ? or nom_categorie like ?)"
@@ -26,6 +28,7 @@ router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
             const [results] = await connection.promise().query(query, [recherche, recherche, recherche])
             console.log(results);
 
+			//results.push({'id_user': userConnecte});
             res.status(200).send(results)
     } catch (err) {
 		response.send({'erreur': err})

@@ -8,6 +8,8 @@ var passport = require('../config/passport');
 * Reourne "{'ok': true}" et un code 200 si ca a fonctionner sinon un erreur
 */
 router.post('/', passport.authenticate('local'), (request, response) => {
+    //var results = [{'ok': true}];
+    //results.push({'id_user': userConnecte});
     response.status(200).send({'ok': true})
 
 });

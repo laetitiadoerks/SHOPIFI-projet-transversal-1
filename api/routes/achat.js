@@ -14,6 +14,9 @@ router.post('/ajout',  auth.isAuthenticated,  async (req, res) => {
         const userConnecte = req.user.id_user;
         const id_produit = req.body.id_produit;
         const date_achat = req.body.date_achat;
+        // const userConnecte = req.query.id_user;
+        // const id_produit = req.query.id_produit;
+        // const date_achat = req.query.date_achat;
 
         // console.log('on est dans ajout achat');
         // console.log(id_produit);
@@ -22,6 +25,9 @@ router.post('/ajout',  auth.isAuthenticated,  async (req, res) => {
         const query = "INSERT INTO `achat` VALUES (null, ?, ?, ?);"
         await connection.promise().query(query, [userConnecte, id_produit, date_achat])
         //console.log(results);
+        
+        //var results = [{'ok': true}];
+        //results.push({'id_user': userConnecte});
         res.status(200).send({'ok': true})
     } catch (err) {
 		res.send({'erreur': err})
