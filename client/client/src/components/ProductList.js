@@ -1,10 +1,15 @@
 import React from 'react';
 import Product from './film/Product';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default class ProductList extends React.Component {
-    state = {
-        films: [],
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            films: [],
+        }
     }
 
     componentWillMount() {
@@ -15,6 +20,7 @@ export default class ProductList extends React.Component {
             console.log(response.data)
         })
     }
+
     render() {
         let films = this.state.films.map((film) => {
             return (
@@ -36,7 +42,7 @@ export default class ProductList extends React.Component {
                         iudicio imperiali addictum calcibus incessens et pugnis conculcans seminecem laniatu miserando
                         discerpsit. post cuius lacrimosum interitum in unius exitio quisque imaginem periculi considerans
                         documento recenti similia formidabat." />
-                    <Product nom_produit="The Matrix" description_produit="Postremo ad id indignitatis est ventum, 
+                    <Product  nom_produit="The Matrix" description_produit="Postremo ad id indignitatis est ventum, 
                         ut cum peregrini ob formidatam haut ita dudum alimentorum inopiam pellerentur 
                         ab urbe praecipites, sectatoribus disciplinarum liberalium inpendio paucis sine respiratione
                         ulla extrusis, tenerentur minimarum adseclae veri, quique id simularunt ad tempus, et tria milia 

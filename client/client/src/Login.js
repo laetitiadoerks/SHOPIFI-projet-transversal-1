@@ -100,11 +100,10 @@ class Login extends Component {
                     <input type="email" name="email" value={this.state.email} onChange={this.handleChange} />
                     <br />
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
-                        <button type="button" value={this.state.loggedInOk} onClick={this.onSubmit}>Se connecter</button>
-                        <button type="button" value={this.state.loggedInOk} onClick={this.onSet}>Test</button>
-                    </form>
-
-                    <p>Cookies: {this.state.token}</p>
+                </form>
+                <button type="button" value={this.state.loggedInOk} onClick={this.onSubmit}>Se connecter</button>
+                <button type="button" value={this.state.loggedInOk} onClick={this.onSet}>Cookies</button>
+                <p>Cookies: {this.state.token}</p>
                 </body>
             </div>)
     }
