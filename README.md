@@ -4,6 +4,7 @@ SHOPIFI est un projet qui a été créé pour un cours de l'université de genè
 Ce projet a pour but de créer une plateforme d’achats et de consultations de produits/films en ligne. Les clients pourront donc consulter et acheter des produits sur cette plateforme.
 
 ## Outils utilisés
+
 Les outils utilisés pour ce projet sont
 * MySQL
 * Node
@@ -22,6 +23,7 @@ git clone https://github.com/laetitiadoerks/SHOPIFI-projet-transversal-1.git
 ```
 
 ### 2.- Installer les dépendances
+
 Dans le dossier cloner:
 ```bash
 cd api
@@ -39,6 +41,7 @@ et si vous voulez les données avec lesquelles le projet a été concu, insérer
 Il faut ensuite modifier les données se trouvant dans le fichier `api/lib/dbconn.js`pour y mettre vos informations de connection à la base de données.
 
 ### 4.- Démarrer le serveur
+
 Dans le dossier cloner
 ```bash
 cd api
@@ -46,9 +49,53 @@ npm start
 ```
 
 ### 5.- Démarrer le client
+
 Dans une nouvelle fenêtre du terminal.
+
 Dans le dossier cloner
 ```bash
 cd client/client
 npm start
 ```
+
+## Documentation dur les requêtes
+
+Voici les chemins des requêtes de l'API (testable dans Postman):
+
+### http://localhost:9000/logout POST
+
+Demande d'être connecté.
+
+### http://localhost:9000/login?username=lo@g.com&password=1234 POST
+
+Lien de test fonctionnel pour se connecter
+
+### http://localhost:9000/accueil GET
+
+Demande d'être connecté.
+
+### http://localhost:9000/accueil/recherche?recherche=z GET
+
+### http://localhost:9000/user GET
+
+### http://localhost:9000/user/achats GET
+
+### http://localhost:9000/user/modification POST
+
+{"prenom_user": "alberti", "nom_user": "rigit", "addresse": "jjjjhhhjjjj", "mot_de_passe": "12345"}
+
+### http://localhost:9000/recommandation GET
+
+### http://localhost:9000/achat/ajout POST
+
+### http://localhost:9000/signup POST
+
+{"prenom_user": "albertine", "nom_user": "rigi", "genre":"Female", "date_naissance": "1999-12-10", "addresse": "jjjjjjjj", "email": "rigatto.com", "mot_de_passe": "1234"}
+
+### http://localhost:9000/hobbyinteret/interet/ajout POST
+
+### http://localhost:9000/hobbyinteret/hobby GET
+
+### http://localhost:9000/produit?id_produit=2
+
+{"nom_produit": "titan", "prix": "15", "description_produit": "ce film est une fiction"}
