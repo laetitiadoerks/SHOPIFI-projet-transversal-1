@@ -24,6 +24,7 @@ class Login extends Component {
         //vous devriez lier cette méthode.
         this.handleChange = this.handleChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onSet = this.onSet.bind(this);
     }
 
     handleChange(event) {
@@ -34,10 +35,9 @@ class Login extends Component {
     }
 
 
+
     onSubmit(event) {
-        const config = {
-            headers: { "Authorization": `Bearer ${this.state.token}` }
-        };
+
         const username = 'lo@g.com';
         const password = '1234';
         const { history } = this.props;
@@ -57,26 +57,40 @@ class Login extends Component {
                 console.log(answer);
                 console.log(response);
                 console.log(document.cookie);
-                //history.push('/utilisateur');
+            //    history.push('/utilisateur');
             })
             .catch(function (error) {
                 console.log(error)
             });
-        axios.get('http://localhost:9000/user').then((response) => {
-            this.setState({
-                films: response.data
-            })
-            console.log(response.data);
-        })
-            .catch(err => console.log(err))
+
     }
 
-
+    onSet(event) {
+        axios.get('http://localhost:9000/produit', { params: { 'id_produit': '2' } } ).then((response) => {
+            this.setState({
+                films: response.data
+            });
+            console.log("yo")
+            console.log(response.data[0].nom_user)
+        })
+    }
 
     //Redirect après que l'utilisateur se soit connecter
 
     render() {
-
+        let films = this.state.films.map((film) => {
+            return (
+                <tr key={film.id_produit}>
+                    <th>{film.id_produit}</th>
+                    <th>{film.nom_produit}</th>
+                    <th>{film.prix}</th>
+                    <th>
+                        <button>Yes</button>
+                        <button>Nope</button>
+                    </th>
+                </tr>
+            )
+        });
         return (
             <div>
                 <body>
@@ -86,7 +100,9 @@ class Login extends Component {
                     <br />
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
                         <button type="button" value={this.state.loggedInOk} onClick={this.onSubmit}>Se connecter</button>
+                        <button type="button" value={this.state.loggedInOk} onClick={this.onSet}>bad</button>
                     </form>
+
                     <p>{this.state.token}</p>
                 </body>
             </div>)

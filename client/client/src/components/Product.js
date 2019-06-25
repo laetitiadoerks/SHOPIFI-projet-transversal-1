@@ -4,7 +4,7 @@ export default class Product extends React.Component {
     render() {
         return (
             <div>
-                hello from product
+                hello des produits
             </div>
             )
     }
