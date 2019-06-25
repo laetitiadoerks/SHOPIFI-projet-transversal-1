@@ -31,14 +31,17 @@ router.post('/', async (req, res) => {
         // console.log(statutUser);
 
         // véfirie si l'email est présent
+        //if (!req.query.email) {
         if (!req.body.email) {
             throw 'Email requis.'
         }
         // vérifie si le mot de passe est présent
+        //if (!req.query.mot_de_passe) {
         if (!req.body.mot_de_passe) {
             throw 'Mot de passe requis.'
         }
         // Vérifie si l'email est déjà pris
+        //const listeEmail = await emailUnique(req.query.email);
         const listeEmail = await emailUnique(req.body.email);
         // console.log('liste email');
         // console.log(listeEmail);
@@ -49,12 +52,16 @@ router.post('/', async (req, res) => {
         }
 
         // initialise le tableau de données pour la requete avec les données entrées par l'utilisateur
+        //const user = [idUser, req.query.prenom_user, req.query.nom_user, req.query.genre, req.query.date_naissance, req.query.addresse, req.query.email, req.query.mot_de_passe, statutUser];
         const user = [idUser, req.body.prenom_user, req.body.nom_user, req.body.genre, req.body.date_naissance, req.body.addresse, req.body.email, req.body.mot_de_passe, statutUser];
         console.log(user);
         const query = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
         await connection.promise().query(query, user)
         // console.log('hahaha quand meme donnees entree dans BD');
         // console.log(results);
+
+        //var results = [{'ok': true}];
+        //results.push({'id_user': userConnecte});
         res.send({'ok': true})
     } catch (err) {
         res.status(500).send({'error': err})

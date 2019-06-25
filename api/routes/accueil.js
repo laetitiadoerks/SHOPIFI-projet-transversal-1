@@ -9,6 +9,8 @@ const auth = require('../config/auth');
 */
 
 router.get('/',  auth.isAuthenticated, function(request, response) {
+	//var results = [{'ok': true}];
+	//results.push({'id_user': userConnecte});
 	response.status(200).send({'ok': true});
 });
 
@@ -26,6 +28,7 @@ router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
             const [results] = await connection.promise().query(query, [recherche, recherche, recherche])
             console.log(results);
 
+			//results.push({'id_user': userConnecte});
             res.status(200).send(results)
     } catch (err) {
 		response.send({'erreur': err})

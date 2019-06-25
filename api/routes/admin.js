@@ -25,7 +25,8 @@ const checkStatutUser =  async(idUser) => {
 router.get('/',  auth.isAuthenticated,  async (req, res) => {
     try {
         //// initialisation et recupération de la valeur de la variable pour la requete
-        var idUser = req.user.id_user;
+        const idUser = req.user.id_user;
+        //const idUser = req.query.id_user;
         console.log(idUser);
         const results = await checkStatutUser(idUser);
 
@@ -35,6 +36,8 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             res.status(404).send({'erreur': 'Cet utilisateur n\'a pas de status ou il n\'existe pas'});
         }
         else if (results.statut = 'admin') {
+            //var results = [{'ok': true}];
+            //results.push({'id_user': userConnecte});
             res.status(200).send({'ok': true})
         }
         else {
@@ -56,7 +59,8 @@ router.post('/ajout', auth.isAuthenticated, async (req, res) => {
     try {
 
         //// initialisation et recupération de la valeur de la variable pour la requete
-        var idUser = req.user.id_user;
+        const idUser = req.user.id_user;
+        //const idUser = req.query.id_user;
         console.log(idUser);
         const results = await checkStatutUser(idUser);
 
@@ -76,21 +80,27 @@ router.post('/ajout', auth.isAuthenticated, async (req, res) => {
             // console.log(note);
 
             // véfirie si l'email est présent
+            //if (!req.query.nom_produit) {
             if (!req.body.nom_produit) {
                 throw 'Le nom du produit est requis'
             }
             // vérifie si le mot de passe est présent
+            //if (!req.query.prix) {
             if (!req.body.prix) {
                 throw 'Le prix du produit est requis.'
             }
 
             // initialise le tableau de données pour la requete avec les données entrées par l'utilisateur
+            //const produit = [idProduit, req.query.nom_produit, req.query.prix, req.query.description_produit, image, note];
             const produit = [idProduit, req.body.nom_produit, req.body.prix, req.body.description_produit, image, note];
             console.log(produit);
             const query = "INSERT INTO produit VALUES (?, ?, ?, ?, ?, ?);"
             await connection.promise().query(query, produit)
             // console.log('hahaha quand meme donnees entree dans BD');
             // console.log(results);
+
+            //var results = [{'ok': true}];
+            //results.push({'id_user': userConnecte});
             res.status(200).send({'ok': true})
         }
         else {

@@ -10,6 +10,8 @@ const auth = require('../config/auth');
 router.post('/',  auth.isAuthenticated, (request, response) => {
     // console.log(req.user.email);
 	request.logout();
+	//var results = [{'ok': true}];
+	//results.push({'id_user': userConnecte});
     response.status(200).send({'ok': true})
 });
 
