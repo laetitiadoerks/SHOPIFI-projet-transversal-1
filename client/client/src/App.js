@@ -19,15 +19,15 @@ function App() {
             <React.Fragment>
             <NavBar />
         <Switch>
-             {/*Page accessible à tout le monde*/}
+             {/*Page accessible ï¿½ tout le monde*/}
             <Route exact path="/" component={ProductList} />
             <Route exact path="/accueil" component={Accueil} />
-                    {/*Page accessible à tout le monde*/}
+                    {/*Page accessible ï¿½ tout le monde*/}
             <Route exact path="/logged" component={Logged} />
             <Route exact path="/details" component={Details} />
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/Login" component={Login} />
-            {/*Pas de path défini dans ce route pour que toute autre requête donne page not found*/}
+            {/*Pas de path dï¿½fini dans ce route pour que toute autre requï¿½te donne page not found*/}
             <Route exact path="/Utilisateur" component={Utilisateur} />
             <Route component={Default} />
         </Switch>

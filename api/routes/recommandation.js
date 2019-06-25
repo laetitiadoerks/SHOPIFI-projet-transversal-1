@@ -329,7 +329,8 @@ const recommandationPopulaire =  async(userId) => {
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-router.get('/',  auth.isAuthenticated,  async (req, res) => {
+//auth.isAuthenticated,
+router.get('/', async (req, res) => {
     try {
 
         // 1: récuperer id du user
