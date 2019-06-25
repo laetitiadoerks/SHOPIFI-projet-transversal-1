@@ -8,18 +8,20 @@ const auth = require('../config/auth');
 * Verifie si le user est connecter
 */
 
-router.get('/',  auth.isAuthenticated, function(request, response) {
-	//var results = [{'ok': true}];
-	//results.push({'id_user': userConnecte});
-	response.status(200).send({'ok': true});
+router.get('/', function(request, response) {
+	const userConnecte = request.query.id_user;
+	var results = [{'ok': true}];
+	results.push({'id_user': userConnecte});
+	response.status(200).send(results);
 });
 
 /**
 * Fonction pour obtenir une liste de produits a partir d'un mot donné
 * Verifie si user connecter
 */
-router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
+router.get('/recherche', async (req, res) => {
     try {
+			const userConnecte = req.query.id_user;
             var recherche=req.query.recherche;
             console.log(recherche);
             recherche = '%'+recherche+'%';
@@ -28,7 +30,7 @@ router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
             const [results] = await connection.promise().query(query, [recherche, recherche, recherche])
             console.log(results);
 
-			//results.push({'id_user': userConnecte});
+			results.push({'id_user': userConnecte});
             res.status(200).send(results)
     } catch (err) {
 		response.send({'erreur': err})

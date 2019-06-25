@@ -8,10 +8,12 @@ const auth = require('../config/auth');
 * Verifie si le user est connecté
 * Reourne "{'ok': true}" et un code 200 si ca a fonctionner sinon un erreur
 */
-router.post('/ajout',  auth.isAuthenticated,  async (req, res) => {
+router.post('/ajout', async (req, res) => {
     try {
         //initialisation des variable et recupération des valeurs pour la requete
-        const userConnecte = req.user.id_user;
+        // const userConnecte = req.user.id_user;
+        //const userConnecte = req.query.id_user;
+        const userConnecte = req.body.id_user;
         const id_produit = req.body.id_produit;
         const date_achat = req.body.date_achat;
         // const userConnecte = req.query.id_user;
@@ -25,10 +27,10 @@ router.post('/ajout',  auth.isAuthenticated,  async (req, res) => {
         const query = "INSERT INTO `achat` VALUES (null, ?, ?, ?);"
         await connection.promise().query(query, [userConnecte, id_produit, date_achat])
         //console.log(results);
-        
-        //var results = [{'ok': true}];
-        //results.push({'id_user': userConnecte});
-        res.status(200).send({'ok': true})
+
+        var results = [{'ok': true}];
+        results.push({'id_user': userConnecte});
+        res.status(200).send(results)
     } catch (err) {
 		res.send({'erreur': err})
     }

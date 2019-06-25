@@ -22,11 +22,11 @@ const checkStatutUser =  async(idUser) => {
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-router.get('/',  auth.isAuthenticated,  async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         //// initialisation et recupération de la valeur de la variable pour la requete
-        const idUser = req.user.id_user;
-        //const idUser = req.query.id_user;
+        //const idUser = req.user.id_user;
+        const idUser = req.query.id_user;
         console.log(idUser);
         const results = await checkStatutUser(idUser);
 
@@ -36,9 +36,9 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
             res.status(404).send({'erreur': 'Cet utilisateur n\'a pas de status ou il n\'existe pas'});
         }
         else if (results.statut = 'admin') {
-            //var results = [{'ok': true}];
-            //results.push({'id_user': userConnecte});
-            res.status(200).send({'ok': true})
+            var resultats = [{'ok': true}];
+            resultats.push({'id_user': userConnecte});
+            res.status(200).send(resultats)
         }
         else {
             //console.log(results.length);
@@ -55,11 +55,12 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
 * Retourne "{'ok': true}" et un code 200 si ca a fonctionner sinon un erreur
 */
 //pour s'enregistrer
-router.post('/ajout', auth.isAuthenticated, async (req, res) => {
+router.post('/ajout', async (req, res) => {
     try {
 
         //// initialisation et recupération de la valeur de la variable pour la requete
-        const idUser = req.user.id_user;
+        //const idUser = req.user.id_user;
+        const idUser = req.body.id_user;
         //const idUser = req.query.id_user;
         console.log(idUser);
         const results = await checkStatutUser(idUser);
@@ -99,9 +100,9 @@ router.post('/ajout', auth.isAuthenticated, async (req, res) => {
             // console.log('hahaha quand meme donnees entree dans BD');
             // console.log(results);
 
-            //var results = [{'ok': true}];
-            //results.push({'id_user': userConnecte});
-            res.status(200).send({'ok': true})
+            var resultats = [{'ok': true}];
+            resultats.push({'id_user': userConnecte});
+            res.status(200).send(resultats)
         }
         else {
             //console.log(results.length);

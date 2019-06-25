@@ -10,12 +10,12 @@ const auth = require('../config/auth');
 */
 router.get('/hobby',  auth.isAuthenticated,  async (req, res) => {
     try {
-        // // const userConnecte = req.query.id_user;
-        // const userConnecte = req.user.id_user;
+        const userConnecte = req.query.id_user;
+        //const userConnecte = req.user.id_user;
         const query = "SELECT * FROM hobby"
         const [results] = await connection.promise().query(query)
         console.log(results);
-        //results.push({'id_user': userConnecte});
+        results.push({'id_user': userConnecte});
         res.status(200).send(results)
     } catch (err) {
 		response.send({'erreur': err})
@@ -29,12 +29,12 @@ router.get('/hobby',  auth.isAuthenticated,  async (req, res) => {
 */
 router.get('/interet',  auth.isAuthenticated,  async (req, res) => {
     try {
-        // // const userConnecte = req.query.id_user;
+        const userConnecte = req.query.id_user;
         // const userConnecte = req.user.id_user;
         const query = "SELECT * FROM interet"
         const [results] = await connection.promise().query(query)
         console.log(results);
-        //results.push({'id_user': userConnecte});
+        results.push({'id_user': userConnecte});
         res.status(200).send(results)
     } catch (err) {
 		response.send({'erreur': err})
@@ -50,7 +50,8 @@ router.get('/interet',  auth.isAuthenticated,  async (req, res) => {
 router.post('/hobby/ajout',  auth.isAuthenticated,  async (req, res) => {
     try {
         // initialisation et recupération des valeurs des variables pour la requete
-        const userConnecte = req.user.id_user;
+        // const userConnecte = req.user.id_user;
+        const userConnecte = req.body.id_user;
         const id_hobby1 = req.body.id_hobby1;
         const id_hobby2 = req.body.id_hobby2;
         const id_hobby3 = req.body.id_hobby3;
@@ -68,9 +69,9 @@ router.post('/hobby/ajout',  auth.isAuthenticated,  async (req, res) => {
         await connection.promise().query(query, [userConnecte, id_hobby1, userConnecte, id_hobby2, userConnecte, id_hobby3])
         //console.log(results);
 
-        //var results = [{'ok': true}];
-        //results.push({'id_user': userConnecte});
-        res.status(200).send({'ok': true})
+        var results = [{'ok': true}];
+        results.push({'id_user': userConnecte});
+        res.status(200).send(results)
     } catch (err) {
 		res.send({'erreur': err})
     }
@@ -85,7 +86,8 @@ router.post('/hobby/ajout',  auth.isAuthenticated,  async (req, res) => {
 router.post('/interet/ajout',  auth.isAuthenticated,  async (req, res) => {
     try {
         // initialisation et recupération des valeurs des variables pour la requete
-        const userConnecte = req.user.id_user;
+        //const userConnecte = req.user.id_user;
+        const userConnecte = req.body.id_user;
         const id_interet1 = req.body.id_interet1;
         const id_interet2 = req.body.id_interet2;
         const id_interet3 = req.body.id_interet3;
@@ -103,9 +105,9 @@ router.post('/interet/ajout',  auth.isAuthenticated,  async (req, res) => {
         await connection.promise().query(query, [userConnecte, id_interet1, userConnecte, id_interet2, userConnecte, id_interet3])
         //console.log(results);
 
-        //var results = [{'ok': true}];
-        //results.push({'id_user': userConnecte});
-        res.status(200).send({'ok': true})
+        var results = [{'ok': true}];
+        results.push({'id_user': userConnecte});
+        res.status(200).send(results)
     } catch (err) {
 		res.send({'erreur': err})
     }

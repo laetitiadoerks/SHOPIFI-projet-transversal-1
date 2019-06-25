@@ -60,9 +60,9 @@ router.post('/', async (req, res) => {
         // console.log('hahaha quand meme donnees entree dans BD');
         // console.log(results);
 
-        //var results = [{'ok': true}];
-        //results.push({'id_user': userConnecte});
-        res.send({'ok': true})
+        var results = [{'ok': true}];
+        results.push({'id_user': userConnecte});
+        res.send(results)
     } catch (err) {
         res.status(500).send({'error': err})
     }
