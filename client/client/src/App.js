@@ -12,7 +12,7 @@ import Details from './components/Details';
 import Cart from './components/Cart';
 import Default from './components/Default';
 import NavBar from './components/NavBar';
-import Utilisateur from './Utilisateur';
+import Utilisateur from './components/Utilisateur';
 function App() {
     return (
         <div>

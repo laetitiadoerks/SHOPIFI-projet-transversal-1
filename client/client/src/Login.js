@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Route, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
-
-
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -71,7 +69,7 @@ class Login extends Component {
                 films: response.data
             });
             console.log("yo")
-            console.log(response.data[0].nom_user)
+            console.log(response.data)
         })
     }
 
