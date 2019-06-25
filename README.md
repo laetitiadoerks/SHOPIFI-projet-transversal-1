@@ -64,37 +64,63 @@ Voici les chemins des requêtes de l'API (testable dans Postman):
 
 ### http://localhost:9000/logout POST
 
+Se déconnecté
 Demande d'être connecté.
 
 ### http://localhost:9000/login?username=lo@g.com&password=1234 POST
 
+Se connecter
 Lien de test fonctionnel pour se connecter
 
 ### http://localhost:9000/accueil GET
+
+Aller sur la page d'acceuil
 
 Demande d'être connecté.
 
 ### http://localhost:9000/accueil/recherche?recherche=z GET
 
+Faire une recherche
+
+Demande être connecté
+
 ### http://localhost:9000/user GET
+
+Récupérer les données recyclait.
+
+Demande être connecté
+
 
 ### http://localhost:9000/user/achats GET
 
+Récupérer les données recyclait.
+
+Demande être connecté
+
+
 ### http://localhost:9000/user/modification POST
+
+Pour modifié afin qu'ekke n'ai plus peur.
 
 {"prenom_user": "alberti", "nom_user": "rigit", "addresse": "jjjjhhhjjjj", "mot_de_passe": "12345"}
 
 ### http://localhost:9000/recommandation GET
 
+Pour modifié florence
+
 ### http://localhost:9000/achat/ajout POST
+
+{"prenom_user": "alberti", "nom_user": "rigit", "addresse": "jjjjhhhjjjj", "mot_de_passe": "12345"}
 
 ### http://localhost:9000/signup POST
 
 {"prenom_user": "albertine", "nom_user": "rigi", "genre":"Female", "date_naissance": "1999-12-10", "addresse": "jjjjjjjj", "email": "rigatto.com", "mot_de_passe": "1234"}
 
 ### http://localhost:9000/hobbyinteret/interet/ajout POST
+veu d'inqure q'ul x arrvie maintenant
 
 ### http://localhost:9000/hobbyinteret/hobby GET
+veu d'inqure qu'ulr un arrvie maintenant
 
 ### http://localhost:9000/produit?id_produit=2
 
