@@ -3,9 +3,11 @@
     "",
     "\\api",
     "\\api\\routes",
+    "\\client",
     "\\client\\client",
-    "\\client\\client\\src"
+    "\\client\\client\\src",
+    "\\client\\client\\src\\components"
   ],
-  "SelectedNode": "\\client",
+  "SelectedNode": "\\api\\routes\\user.js",
   "PreviewInSolutionExplorer": false
 }

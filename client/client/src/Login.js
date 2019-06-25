@@ -35,16 +35,18 @@ class Login extends Component {
 
 
     onSubmit(event) {
-
-        const username = 'lo@g.com';
-        const password = '1234';
+        //lo@g.com
+        //1234
+        const username = this.state.email;
+        const pass = this.state.mot_de_passe;
+        const password = 1234;
         const { history } = this.props;
         console.log("Email: " + username + " Password: " + password);
         axios.post('http://localhost:9000/login', null, {
             //Pour que ça soit dans le body de la requête 
             params: {
                 username,
-                password
+                password,
             }})
             //Toujours utilisé les arrows pour bien définir le contexte
             .then(response => {
@@ -55,7 +57,7 @@ class Login extends Component {
                 console.log(answer);
                 console.log(response);
                 console.log(document.cookie);
-            //    history.push('/utilisateur');
+                history.push('/utilisateur');
             })
             .catch(function (error) {
                 console.log(error)
@@ -72,6 +74,7 @@ class Login extends Component {
             console.log(response.data)
         })
     }
+
 
     //Redirect après que l'utilisateur se soit connecter
 
@@ -98,10 +101,10 @@ class Login extends Component {
                     <br />
                     <input type="password" name="password" value={this.state.password} onChange={this.handleChange} />
                         <button type="button" value={this.state.loggedInOk} onClick={this.onSubmit}>Se connecter</button>
-                        <button type="button" value={this.state.loggedInOk} onClick={this.onSet}>bad</button>
+                        <button type="button" value={this.state.loggedInOk} onClick={this.onSet}>Test</button>
                     </form>
 
-                    <p>{this.state.token}</p>
+                    <p>Cookies: {this.state.token}</p>
                 </body>
             </div>)
     }

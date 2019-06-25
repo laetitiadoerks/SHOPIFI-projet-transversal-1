@@ -19,8 +19,8 @@ function App() {
             <React.Fragment>
             <NavBar />
         <Switch>
-             {/*Page accessible � tout le monde*/}
-            <Route exact path="/" component={ProductList} />
+                    {/*Page accessible � tout le monde*/}
+            <Route exact path="/films" component={ProductList} />
             <Route exact path="/accueil" component={Accueil} />
                     {/*Page accessible � tout le monde*/}
             <Route exact path="/logged" component={Logged} />
@@ -29,7 +29,6 @@ function App() {
             <Route exact path="/Login" component={Login} />
             {/*Pas de path d�fini dans ce route pour que toute autre requ�te donne page not found*/}
             <Route exact path="/Utilisateur" component={Utilisateur} />
-            <Route component={Default} />
         </Switch>
             </React.Fragment>
         </div>

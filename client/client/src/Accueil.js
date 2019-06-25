@@ -1,22 +1,25 @@
 import React from 'react';
 import Login from './Login.js';
 import { Redirect } from 'react-router-dom';
+import isAuthenticated from './components/isAuthenticated';
 
 
-class Accueil extends React.Component {
+export default function Accueil(){
 
-    render() {
+    const authenticated = isAuthenticated()
+    if(authenticated) {
+        return <Redirect to="/" />
+    }
+
         return (
             <div>
                 <head> 
                     <title>Page d'accueil</title>
                 </head>
-            <body>
+                <body>
+                    <Login />
                     La page d'accueil
             </body>
             </div>
             )
     }
-}
-
-export default Accueil

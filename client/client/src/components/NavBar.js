@@ -16,15 +16,15 @@ export default class NavBar extends React.Component {
                     <img src={icone} alt="logo 2"  />
                     {/*<img src={logo} alt="logo" className="navbar-brand" >*/}
                 </Link>
-                <Link className="App-header" to="/">
-                      Films
+                <Link className="App-header" to="/films">
+                     Films
                 </Link>
-                <Link className="App-header" to="/cart">
-                        <span > 
-                        <i className="fas fa-cart-plus" />
-                         mon cadis
-                        </span>
-                    </Link>
+                <Link className="App-header" to="/Login">
+                        Login
+                </Link>
+                <Link className="App-header" to="/Utilisateur">
+                        Utilisateur
+                </Link>
                 </nav>
             </div>
             )
