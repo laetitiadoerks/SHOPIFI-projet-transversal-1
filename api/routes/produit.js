@@ -9,12 +9,11 @@ const auth = require('../config/auth');
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-//auth.isAuthenticated,
-router.get('/', async (req, res) => {
+router.get('/', auth.isAuthenticated, async (req, res) => {
     try {
         //// initialisation et recupération de la valeur de la variable pour la requete
         const produit = req.query.id_produit;
-        const userConnecte = req.query.id_user;
+        const userConnecte = req.user.id_user;
         console.log(produit);
         const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM produit, categorie, produit_categorie WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie and produit.id_produit = ?"
 
@@ -28,8 +27,6 @@ router.get('/', async (req, res) => {
         }
         else {
             //console.log(results.length);
-
-            results.push({'id_user': userConnecte});
             res.status(200).send(results)
         }
     } catch (err) {
