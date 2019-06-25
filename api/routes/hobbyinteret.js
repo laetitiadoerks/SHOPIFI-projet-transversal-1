@@ -10,12 +10,11 @@ const auth = require('../config/auth');
 */
 router.get('/hobby',  auth.isAuthenticated,  async (req, res) => {
     try {
-        // // const userConnecte = req.query.id_user;
-        // const userConnecte = req.user.id_user;
+        // const userConnecte = req.query.id_user;
+        //const userConnecte = req.user.id_user;
         const query = "SELECT * FROM hobby"
         const [results] = await connection.promise().query(query)
         console.log(results);
-        //results.push({'id_user': userConnecte});
         res.status(200).send(results)
     } catch (err) {
 		response.send({'erreur': err})
@@ -29,12 +28,11 @@ router.get('/hobby',  auth.isAuthenticated,  async (req, res) => {
 */
 router.get('/interet',  auth.isAuthenticated,  async (req, res) => {
     try {
-        // // const userConnecte = req.query.id_user;
+        // const userConnecte = req.query.id_user;
         // const userConnecte = req.user.id_user;
         const query = "SELECT * FROM interet"
         const [results] = await connection.promise().query(query)
         console.log(results);
-        //results.push({'id_user': userConnecte});
         res.status(200).send(results)
     } catch (err) {
 		response.send({'erreur': err})
@@ -68,8 +66,7 @@ router.post('/hobby/ajout',  auth.isAuthenticated,  async (req, res) => {
         await connection.promise().query(query, [userConnecte, id_hobby1, userConnecte, id_hobby2, userConnecte, id_hobby3])
         //console.log(results);
 
-        //var results = [{'ok': true}];
-        //results.push({'id_user': userConnecte});
+
         res.status(200).send({'ok': true})
     } catch (err) {
 		res.send({'erreur': err})
@@ -103,8 +100,7 @@ router.post('/interet/ajout',  auth.isAuthenticated,  async (req, res) => {
         await connection.promise().query(query, [userConnecte, id_interet1, userConnecte, id_interet2, userConnecte, id_interet3])
         //console.log(results);
 
-        //var results = [{'ok': true}];
-        //results.push({'id_user': userConnecte});
+
         res.status(200).send({'ok': true})
     } catch (err) {
 		res.send({'erreur': err})

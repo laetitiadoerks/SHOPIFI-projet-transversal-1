@@ -9,10 +9,9 @@ const auth = require('../config/auth');
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-router.get('/',  auth.isAuthenticated,  async (req, res) => {
+router.get('/', auth.isAuthenticated, async (req, res) => {
     try {
         // initialisation et recupération de l'id du user pour la requete
-        //const userConnecte = req.query.id_user;
         const userConnecte = req.user.id_user;
         console.log(userConnecte);
         const query = "SELECT prenom_user, nom_user, genre, date_naissance, addresse, email, mot_de_passe FROM `user` WHERE id_user=?"
@@ -27,7 +26,6 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
         else {
             //console.log(results.length);
             //console.log(results[0]);
-            //results.push({'id_user': userConnecte});
             res.status(200).send(results)
         }
     } catch (err) {
@@ -41,10 +39,9 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-router.get('/achats',  auth.isAuthenticated,  async (req, res) => {
+router.get('/achats', auth.isAuthenticated, async (req, res) => {
     try {
         // initialisation et recupération de l'id du user pour la requete
-        //const userConnecte = req.query.id_user;
         const userConnecte = req.user.id_user;
         console.log(userConnecte);
         const query = "SELECT prenom_user, nom_user, nom_produit, prix, date_achat FROM user, achat, produit WHERE user.id_user=achat.id_user and achat.id_produit=produit.id_produit and user.id_user=?"
@@ -57,7 +54,6 @@ router.get('/achats',  auth.isAuthenticated,  async (req, res) => {
             res.status(404).send({'erreur': 'ce user n\'a pas fait d\'achats'});
         }
         else {
-            //results.push({'id_user': userConnecte});
             res.status(200).send(results)
         }
     } catch (err) {
@@ -73,11 +69,10 @@ router.get('/achats',  auth.isAuthenticated,  async (req, res) => {
 * L'utilisateur peut changer son nom, son prenom, son addresse, son mot de passe
 * il change tout ou rien
 */
-router.post('/modification',  auth.isAuthenticated,  async (req, res) => {
+router.post('/modification', auth.isAuthenticated, async (req, res) => {
     try {
         // initialisation et recupération de l'id du user pour la requete
         const userConnecte = req.user.id_user;
-        //const userConnecte = req.query.id_user;
         // initialisation et recupération des valeurs des variables pour la requete
         const userNom= req.body.nom_user;
         const userPrenom = req.body.prenom_user;
@@ -91,8 +86,7 @@ router.post('/modification',  auth.isAuthenticated,  async (req, res) => {
         const query = "UPDATE `user` SET `prenom_user`=?,`nom_user`=?,`addresse`=?,`mot_de_passe`=? WHERE id_user = ?";
 
         await connection.promise().query(query,[userPrenom, userNom, userAddresse, userMot_de_passe, userConnecte])
-        //var results = [{'ok': true}];
-        //results.push({'id_user': userConnecte});
+
         res.status(200).send({'ok': true})
     } catch (e) {
 		response.send({'erreur': err})

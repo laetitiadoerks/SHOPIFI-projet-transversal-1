@@ -1,4 +1,4 @@
-# SHOPIFI - site de e-commerce pour des vieux films en noir et blanc
+# SHOPIFI - site de e-commerce pour des films
 
 SHOPIFI est un projet qui a été créé pour un cours de l'université de genève dans la formation système d'information et sciences des services.
 Ce projet a pour but de créer une plateforme d’achats et de consultations de produits/films en ligne. Les clients pourront donc consulter et acheter des produits sur cette plateforme.

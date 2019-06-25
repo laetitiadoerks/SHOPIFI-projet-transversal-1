@@ -17,28 +17,25 @@ const checkStatutUser =  async(idUser) => {
 }
 
 /**
-* Fonction qui permet de c hecker si le user est admin ou pas les informations d'un produit
+* Fonction qui permet de checker si le user est admin ou pas les informations d'un produit
 * a partir de l'id d'un user
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-router.get('/',  auth.isAuthenticated,  async (req, res) => {
+router.get('/', auth.isAuthenticated, async (req, res) => {
     try {
-        //// initialisation et recupération de la valeur de la variable pour la requete
+        // initialisation et recupération de la valeur de la variable pour la requete
         const idUser = req.user.id_user;
-        //const idUser = req.query.id_user;
         console.log(idUser);
         const results = await checkStatutUser(idUser);
-
         // verifie si la liste n'est pas vide
         // renvoie une erreur si la liste est vide
+        console.log(results[0].statut);
         if (results.length == 0){
             res.status(404).send({'erreur': 'Cet utilisateur n\'a pas de status ou il n\'existe pas'});
         }
-        else if (results.statut = 'admin') {
-            //var results = [{'ok': true}];
-            //results.push({'id_user': userConnecte});
-            res.status(200).send({'ok': true})
+        else if (results.statut == 'admin') {
+            res.status(200).send(results)
         }
         else {
             //console.log(results.length);
@@ -58,18 +55,16 @@ router.get('/',  auth.isAuthenticated,  async (req, res) => {
 router.post('/ajout', auth.isAuthenticated, async (req, res) => {
     try {
 
-        //// initialisation et recupération de la valeur de la variable pour la requete
+        // initialisation et recupération de la valeur de la variable pour la requete
         const idUser = req.user.id_user;
-        //const idUser = req.query.id_user;
         console.log(idUser);
         const results = await checkStatutUser(idUser);
-
         // verifie si la liste n'est pas vide
         // renvoie une erreur si la liste est vide
         if (results.length == 0){
             res.status(404).send({'erreur': 'Cet utilisateur n\'a pas de status ou il n\'existe pas'});
         }
-        else if (results.statut = 'admin') {
+        else if (results.statut == 'admin') {
             // initialisation les variables fixes pour la requete
             // id_user est autoincrémenter dans la BD et par défaut le statut est 'visiteur'
             const idProduit = null;
@@ -80,18 +75,15 @@ router.post('/ajout', auth.isAuthenticated, async (req, res) => {
             // console.log(note);
 
             // véfirie si l'email est présent
-            //if (!req.query.nom_produit) {
             if (!req.body.nom_produit) {
                 throw 'Le nom du produit est requis'
             }
             // vérifie si le mot de passe est présent
-            //if (!req.query.prix) {
             if (!req.body.prix) {
                 throw 'Le prix du produit est requis.'
             }
 
             // initialise le tableau de données pour la requete avec les données entrées par l'utilisateur
-            //const produit = [idProduit, req.query.nom_produit, req.query.prix, req.query.description_produit, image, note];
             const produit = [idProduit, req.body.nom_produit, req.body.prix, req.body.description_produit, image, note];
             console.log(produit);
             const query = "INSERT INTO produit VALUES (?, ?, ?, ?, ?, ?);"
@@ -99,8 +91,6 @@ router.post('/ajout', auth.isAuthenticated, async (req, res) => {
             // console.log('hahaha quand meme donnees entree dans BD');
             // console.log(results);
 
-            //var results = [{'ok': true}];
-            //results.push({'id_user': userConnecte});
             res.status(200).send({'ok': true})
         }
         else {

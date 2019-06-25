@@ -8,9 +8,7 @@ const auth = require('../config/auth');
 * Verifie si le user est connecter
 */
 
-router.get('/',  auth.isAuthenticated, function(request, response) {
-	//var results = [{'ok': true}];
-	//results.push({'id_user': userConnecte});
+router.get('/', function(request, response) {
 	response.status(200).send({'ok': true});
 });
 
@@ -18,11 +16,13 @@ router.get('/',  auth.isAuthenticated, function(request, response) {
 * Fonction pour obtenir une liste de produits a partir d'un mot donné
 * Verifie si user connecter
 */
-router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
+router.get('/recherche', auth.isAuthenticated, async (req, res) => {
     try {
-            var recherche=req.query.recherche;
+			const userConnecte = req.user.id_user;
+            var recherche = req.query.recherche;
             console.log(recherche);
             recherche = '%'+recherche+'%';
+			console.log(recherche);
             const query = "SELECT nom_produit, prix, description_produit, note, nom_categorie FROM produit, categorie, produit_categorie WHERE produit.id_produit=produit_categorie.id_produit and categorie.id_categorie=produit_categorie.id_categorie and (nom_produit like ? or description_produit like ? or nom_categorie like ?)"
 
             const [results] = await connection.promise().query(query, [recherche, recherche, recherche])
@@ -31,7 +31,7 @@ router.get('/recherche',  auth.isAuthenticated, async (req, res) => {
 			//results.push({'id_user': userConnecte});
             res.status(200).send(results)
     } catch (err) {
-		response.send({'erreur': err})
+		res.send({'erreur': err})
     }
 })
 
