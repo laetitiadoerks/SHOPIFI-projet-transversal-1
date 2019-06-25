@@ -9,37 +9,7 @@ const auth = require('../config/auth');
 * Verifie si le user est connecté
 * Retourne les résultats et un code 200 si ca a fonctionner sinon un erreur
 */
-<<<<<<< Updated upstream
-router.get('/', auth.isAuthenticated, async (req, res) => {
-    try {
-        // initialisation et recupération de l'id du user pour la requete
-        const userConnecte = req.user.id_user;
-=======
-router.get('/', auth.isAuthenticated,  async (req, res) => {
-    try {
-        // initialisation et recupération de l'id du user pour la requete
-        const userConnecte = req.query.id_user;
-        //const userConnecte = req.user.id_user;
->>>>>>> Stashed changes
-        console.log(userConnecte);
-        const query = "SELECT prenom_user, nom_user, genre, date_naissance, addresse, email, mot_de_passe FROM `user` WHERE id_user=?"
 
-        const [results] = await connection.promise().query(query, userConnecte)
-        console.log(results);
-        // verifie si le tableau du resultat est vide ou non
-        // si il est vide, le user n'existe pas
-        if (results.length==0){
-            res.status(404).send({'erreur': 'ce user n\'existe pas'});
-        }
-        else {
-            //console.log(results.length);
-            //console.log(results[0]);
-            res.status(200).send(results)
-        }
-    } catch (err) {
-		response.send({'erreur': err})
-    }
-})
 
 /**
 * Fonction qui permet d'obtenir la liste d'achats d'un user (GET)

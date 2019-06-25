@@ -6,8 +6,9 @@
     "\\client",
     "\\client\\client",
     "\\client\\client\\src",
-    "\\client\\client\\src\\components"
+    "\\client\\client\\src\\components",
+    "\\client\\client\\src\\components\\film"
   ],
-  "SelectedNode": "\\api\\routes\\user.js",
+  "SelectedNode": "\\client\\client\\src\\App.js",
   "PreviewInSolutionExplorer": false
 }
